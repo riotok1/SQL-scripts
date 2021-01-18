@@ -39,7 +39,7 @@ CREATE TABLE [Mineral]
 	[ID]			INT IDENTITY(0,1),
 	[MineralName]	NVARCHAR(MAX)				NOT NULL,
 	[MinUnitID]		INT CONSTRAINT FK_Mineral_MinUnitID_MineralUnit_ID FOREIGN KEY REFERENCES [MineralUnit] ([ID]) NOT NULL,
-	[AnnualOfYear]	NVARCHAR(MAX)				NOT NULL,
+	[AnnualOfYear]	INT				NOT NULL,
 	[PriceForUnit]	NVARCHAR(MAX)				NOT NULL,
 	[TypeID]		INT CONSTRAINT FK_Mineral_TypeID_MineralType_ID FOREIGN KEY REFERENCES [MineralType] ([ID]) NOT NULL,
 	CONSTRAINT PK_Mineral_ID PRIMARY KEY ([ID])
@@ -69,6 +69,7 @@ INSERT INTO [MineralType] ([Type]) VALUES ('Гидроминеральные')
 INSERT INTO [MineralType] ([Type]) VALUES ('Нерудные полезные ископаемые')
 INSERT INTO [MineralType] ([Type]) VALUES ('Камнесамоцветное сырье')
 INSERT INTO [MineralType] ([Type]) VALUES ('Горнохимическре сырьё')
+INSERT INTO [MineralType] ([Type]) VALUES ('Твердое топливо')
 /* --------------------------------------------------------- */
 
 CREATE TABLE [Field]
@@ -77,8 +78,8 @@ CREATE TABLE [Field]
 	[FieldName]		NVARCHAR(MAX)				NOT NULL,
 	[Stocks]		NVARCHAR(MAX)				NOT NULL,
 	[DevMethod]		NVARCHAR(MAX)				NOT NULL,
-	[AnnualProd]	NVARCHAR(MAX)				NOT NULL,
-	[CostForUnit]	NVARCHAR(MAX)				NOT NULL,
+	[AnnualProd]	INT							NOT NULL,
+	[CostForUnit]	NVARCHAR(50)				NOT NULL,
 	[MineralID]		INT CONSTRAINT FK_Field_MineralID_Mineral_ID FOREIGN KEY REFERENCES [Mineral] ([ID]) NOT NULL,
 	CONSTRAINT PK_Field_ID PRIMARY KEY ([ID])
 )
@@ -93,3 +94,9 @@ CREATE TABLE [PickupPoint]
 	CONSTRAINT PK_PickupPoint_ID PRIMARY KEY ([ID])
 )
 GO
+
+DROP TABLE [PickupPoint]
+DROP TABLE [Field]
+DROP TABLE [Mineral]
+DROP TABLE [MineralType]
+DROP TABLE [MineralUnit]
