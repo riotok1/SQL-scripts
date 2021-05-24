@@ -36,6 +36,11 @@ CREATE TABLE [ClientCassette]
 )
 GO
 
+INSERT INTO [ClientCassette] ([ClientID],[CassetteID]) VALUES ('25','15') /* Добавление */
+UPDATE [ClientCassette] SET ClientID=24, CassetteID=14 WHERE ID=15 /* Обновление - изменение данных */
+DELETE FROM [ClientCassette] WHERE ID = '15' /* Удаление */
+SELECT * FROM [ClientCassette] WHERE ID = '14'  /* Фильтрация */
+
 /* Первая часть */
 CREATE TABLE [Cassette]
 (
@@ -145,7 +150,3 @@ CREATE TABLE [OrderTitle]
 GO
 /* Конец */
 
-DROP TABLE [ClientCassette]
-DROP TABLE [Cassette]
-DROP TABLE [CassetteType]
-DROP TABLE [VideoRecording]

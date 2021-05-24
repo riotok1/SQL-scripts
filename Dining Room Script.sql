@@ -31,73 +31,74 @@ GO
 CREATE TABLE [Work]
 (
 	[ID]				INT IDENTITY(1,1),
-	[DishID]			INT CONSTRAINT FK_Work_DishId_DishConnect_ID FOREIGN KEY REFERENCES [DishConnect] ([ID]) NULL,
-	[WorkersID]			INT CONSTRAINT FK_Work_WorkersID_WorkersConnect_ID FOREIGN KEY REFERENCES [WorkersConnect] ([ID]) NULL,
-	[ProductsID]		INT CONSTRAINT FK_Work_ProductsID_ProductsConnect_ID FOREIGN KEY REFERENCES [ProductsConnect] ([ID]) NULL,
+	[DishID]			INT CONSTRAINT FK_Work_DishId_Dish_ID FOREIGN KEY REFERENCES [Dish] ([ID]) NULL,
+	[WorkersID]			INT CONSTRAINT FK_Work_WorkersID_Workers_ID FOREIGN KEY REFERENCES [Workers] ([ID]) NULL,
+	[ProductsID]		INT CONSTRAINT FK_Work_ProductsID_Products_ID FOREIGN KEY REFERENCES [Products] ([ID]) NULL,
 	CONSTRAINT PK_Work_ID PRIMARY KEY ([ID])
 )
 GO
 
-/*-----------------------------------------------------------------------------------------------------------------------------*/
-CREATE TABLE [DishConnect]
-(
-	[ID]				INT IDENTITY(1,1),
-	[DishConId]			INT CONSTRAINT FK_DishConnect_DishConID_Dish_ID FOREIGN KEY REFERENCES [Dish]([ID]) NOT NULL,
-	CONSTRAINT PK_DishConnect_ID PRIMARY KEY ([ID])
-)
-GO
+DROP TABLE [Work]
+DROP TABLE [Dish]
+DROP TABLE [ProductUnit]
 
+
+/*-----------------------------------------------------------------------------------------------------------------------------*/
 CREATE TABLE [Dish]
 (
 	[ID]				INT IDENTITY(1,1),
+	[DishImg]			IMAGE						NOT NULL,		
 	[NameOfDish]		NVARCHAR(100)				NOT NULL,
-	[Price]				MONEY						NOT NULL,
+	[CategoryID]		INT CONSTRAINT FK_Dish_CategoryID_Category_ID FOREIGN KEY REFERENCES [Category] ([ID]) NOT NULL,
+	[Price]				BIGINT						NOT NULL,
 	CONSTRAINT PK_Dish_ID PRIMARY KEY ([ID])
 )
 GO
-/*-----------------------------------------------------------------------------------------------------------------------------*/
 
-/*-----------------------------------------------------------------------------------------------------------------------------*/
-CREATE TABLE [WorkersConnect]
+CREATE TABLE [Category]
 (
 	[ID]				INT IDENTITY(1,1),
-	[WorkConnectID]		INT CONSTRAINT FK_WorkersConnect_WorkConnectID_Workers_ID FOREIGN KEY REFERENCES [Workers]([ID]) NOT NULL,
-	CONSTRAINT PK_WorkersConnect_ID PRIMARY KEY ([ID])
+	[Title]				NVARCHAR(100)				NOT NULL,
+	CONSTRAINT PK_Category_ID PRIMARY KEY ([ID])
 )
 GO
 
+INSERT INTO [Category] ([Title]) VALUES ('Горячее')
+INSERT INTO [Category] ([Title]) VALUES ('Холодное')
+/*-----------------------------------------------------------------------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------------------------------------------------------------------*/
 CREATE TABLE [Workers]
 (
 	[ID]				INT IDENTITY(1,1),
-	[Position]			NVARCHAR(100)				NOT NULL,
+	[WorkerImg]			IMAGE						NOT NULL,
 	[WorkPlace]			NVARCHAR(100)				NOT NULL,
-	[WageID]			INT CONSTRAINT FK_Workers_WageID_Wage_ID FOREIGN KEY REFERENCES [Wage] ([ID]) NOT NULL,
+	[Wage]				BIGINT					    NOT NULL,
+	[PositionID]		INT CONSTRAINT FK_Workers_PositionID_Position_ID FOREIGN KEY REFERENCES [Position] ([ID]) NOT NULL,
 	CONSTRAINT PK_Workers_ID PRIMARY KEY ([ID])
 )
 GO
 
-CREATE TABLE [Wage]
+CREATE TABLE [Position] 
 (
 	[ID]				INT IDENTITY(1,1),
-	[Title]				MONEY						NOT NULL,
-	CONSTRAINT PK_Wage_ID PRIMARY KEY ([ID])
-)
-GO
-/*-----------------------------------------------------------------------------------------------------------------------------*/
-
-/*-----------------------------------------------------------------------------------------------------------------------------*/
-CREATE TABLE [ProductsConnect]
-(
-	[ID]				INT IDENTITY(1,1),
-	[ProdConnectID]		INT CONSTRAINT FK_Products_ProdConnectID_Products_ID FOREIGN KEY REFERENCES [Products] ([ID]) NOT NULL,
-	CONSTRAINT PK_ProductsConnect_ID PRIMARY KEY ([ID])
+	[Title]				NVARCHAR(100)				NOT NULL,
+	CONSTRAINT PK_Position_ID PRIMARY KEY ([ID])
 )
 GO
 
+INSERT INTO [Position] ([Title]) VALUES ('Повар')
+INSERT INTO [Position] ([Title]) VALUES ('Официант')
+INSERT INTO [Position] ([Title]) VALUES ('Кассир')
+INSERT INTO [Position] ([Title]) VALUES ('Клинер')
+INSERT INTO [Position] ([Title]) VALUES ('Охрана')
+/*-----------------------------------------------------------------------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------------------------------------------------------------------*/
 CREATE TABLE [Products]
 (
 	[ID]				INT IDENTITY(1,1),
-	[TotalSum]			MONEY						NOT NULL,
+	[TotalSum]			BIGINT						NOT NULL,
 	[TotalProducts]		INT							NOT NULL,
 	[DateOfAcceptance]	DATETIME					NOT NULL,
 	[ProductUnitID]		INT CONSTRAINT FK_Products_ProductsUnitID_ProductsUnit_ID FOREIGN KEY REFERENCES [ProductUnit] ([ID]) NOT NULL,
@@ -108,8 +109,9 @@ GO
 CREATE TABLE [ProductUnit]
 (
 	[ID]				INT IDENTITY(1,1),
+	[ProductImg]		IMAGE						 NOT NULL,
 	[ProductName]		NVARCHAR(100)				 NOT NULL,
-	[PriceWithUnit]		MONEY						 NOT NULL,		
+	[PriceWithUnit]		BIGINT						 NOT NULL,		
 	CONSTRAINT PK_Products_ID PRIMARY KEY ([ID])
 )
 GO
