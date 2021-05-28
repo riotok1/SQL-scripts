@@ -2,6 +2,18 @@ CREATE DATABASE [DiningRoom]
 USE DiningRoom
 GO
 
+CREATE TABLE [Manager]
+(
+	[ID]				INT IDENTITY(1,1),
+	[Surname]			NVARCHAR(100)				NOT NULL,
+	[Name]				NVARCHAR(100)				NOT NULL,
+	[SignID]			INT CONSTRAINT FK_Manager_SignID_SignIn_ID FOREIGN KEY REFERENCES [SignIn] ([ID]) NOT NULL,
+	CONSTRAINT PK_Manager_ID PRIMARY KEY ([ID])
+)
+GO
+
+INSERT INTO [Manager] ([Surname], [Name], [SignID]) VALUES ('Иванова','Анна','1')
+
 CREATE TABLE [SignIn]
 (
 	[ID]				INT IDENTITY(1,1),
@@ -32,16 +44,17 @@ CREATE TABLE [Work]
 (
 	[ID]				INT IDENTITY(1,1),
 	[DishID]			INT CONSTRAINT FK_Work_DishId_Dish_ID FOREIGN KEY REFERENCES [Dish] ([ID]) NULL,
-	[WorkersID]			INT CONSTRAINT FK_Work_WorkersID_Workers_ID FOREIGN KEY REFERENCES [Workers] ([ID]) NULL,
-	[ProductsID]		INT CONSTRAINT FK_Work_ProductsID_Products_ID FOREIGN KEY REFERENCES [Products] ([ID]) NULL,
+	[WorkerPostID]		INT CONSTRAINT FK_Work_WorkerPostID_WorkerPost_ID FOREIGN KEY REFERENCES [WorkerPost] ([ID]) NULL,
+	[ProductsDateID]	INT CONSTRAINT FK_Work_PoductsDateID_PoductsDate_ID FOREIGN KEY REFERENCES [PoductsDate] ([ID]) NULL,
 	CONSTRAINT PK_Work_ID PRIMARY KEY ([ID])
 )
 GO
 
 DROP TABLE [Work]
-DROP TABLE [Dish]
+DROP TABLE [Workers]
 DROP TABLE [ProductUnit]
 
+SELECT * FROM [Position]
 
 /*-----------------------------------------------------------------------------------------------------------------------------*/
 CREATE TABLE [Dish]
@@ -50,10 +63,11 @@ CREATE TABLE [Dish]
 	[DishImg]			IMAGE						NOT NULL,		
 	[NameOfDish]		NVARCHAR(100)				NOT NULL,
 	[CategoryID]		INT CONSTRAINT FK_Dish_CategoryID_Category_ID FOREIGN KEY REFERENCES [Category] ([ID]) NOT NULL,
+	[Volume]			NVARCHAR(100)				NOT NULL,
 	[Price]				BIGINT						NOT NULL,
 	CONSTRAINT PK_Dish_ID PRIMARY KEY ([ID])
 )
-GO
+GO 
 
 CREATE TABLE [Category]
 (
@@ -68,7 +82,30 @@ INSERT INTO [Category] ([Title]) VALUES ('Холодное')
 /*-----------------------------------------------------------------------------------------------------------------------------*/
 
 /*-----------------------------------------------------------------------------------------------------------------------------*/
+CREATE TABLE [WorkerPost]
+(
+	[ID]				INT IDENTITY(1,1),
+	[WorkersID]			INT CONSTRAINT FK_WorkStaff_WorkersID_Workers_ID FOREIGN KEY REFERENCES [Workers] ([ID]) NOT NULL,
+	[PostsID]			INT CONSTRAINT FK_WorkStaff_PostsID_Posts_ID FOREIGN KEY REFERENCES [Posts] ([ID]) NOT NULL,
+	[DateOfHiring]		DATE						NOT NULL,
+	CONSTRAINT PK_WorkStaff_ID PRIMARY KEY ([ID])
+)
+GO
+
 CREATE TABLE [Workers]
+(
+	[ID]				INT IDENTITY(1,1),
+	[Surname]			NVARCHAR(100)				NOT NULL,
+	[Name]				NVARCHAR(100)				NOT NULL,
+	[Patronymic]		NVARCHAR(100)				NOT NULL,
+	[Age]				INT							NOT NULL,
+	[Expirience]		INT							NOT NULL,
+	[UsStaff]			NVARCHAR(100)				NOT NULL,
+	CONSTRAINT PK_WorkPerson_ID PRIMARY KEY ([ID])
+)
+GO
+
+CREATE TABLE [Posts]
 (
 	[ID]				INT IDENTITY(1,1),
 	[WorkerImg]			IMAGE						NOT NULL,
@@ -95,12 +132,29 @@ INSERT INTO [Position] ([Title]) VALUES ('Охрана')
 /*-----------------------------------------------------------------------------------------------------------------------------*/
 
 /*-----------------------------------------------------------------------------------------------------------------------------*/
+CREATE TABLE [PoductsDate]
+(
+	[ID]				INT IDENTITY(1,1),
+	[DateID]			INT CONSTRAINT FK_ProductsDate_Date_DateOfAcceptance_ID FOREIGN KEY REFERENCES [DateOfAcceptance] ([ID]) NOT NULL,
+	[ProductsID]		INT CONSTRAINT FK_ProductsDate_ProductsID_Products_ID FOREIGN KEY REFERENCES [Products] ([ID]) NOT NULL,
+	CONSTRAINT PK_ProductsDate_ID PRIMARY KEY ([ID])
+)
+GO
+
+CREATE TABLE [DateOfAcceptance]
+(
+	[ID]				INT IDENTITY(1,1),
+	[DateTitle]			DATE						NOT NULL,
+	[TimeTile]			NVARCHAR(50)				NOT NULL,
+	CONSTRAINT PK_DateOfAcceptance_ID PRIMARY KEY ([ID])
+)
+GO
+
 CREATE TABLE [Products]
 (
 	[ID]				INT IDENTITY(1,1),
 	[TotalSum]			BIGINT						NOT NULL,
 	[TotalProducts]		INT							NOT NULL,
-	[DateOfAcceptance]	DATETIME					NOT NULL,
 	[ProductUnitID]		INT CONSTRAINT FK_Products_ProductsUnitID_ProductsUnit_ID FOREIGN KEY REFERENCES [ProductUnit] ([ID]) NOT NULL,
 	CONSTRAINT PK_ProductsMain_ID PRIMARY KEY ([ID])
 )
@@ -109,7 +163,6 @@ GO
 CREATE TABLE [ProductUnit]
 (
 	[ID]				INT IDENTITY(1,1),
-	[ProductImg]		IMAGE						 NOT NULL,
 	[ProductName]		NVARCHAR(100)				 NOT NULL,
 	[PriceWithUnit]		BIGINT						 NOT NULL,		
 	CONSTRAINT PK_Products_ID PRIMARY KEY ([ID])
