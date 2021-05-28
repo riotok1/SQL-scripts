@@ -1,5 +1,5 @@
-CREATE DATABASE [DiningRoom]
-USE DiningRoom
+CREATE DATABASE [ManagerDiningRoom]
+USE ManagerDiningRoom
 GO
 
 CREATE TABLE [Manager]
@@ -51,7 +51,7 @@ CREATE TABLE [Work]
 GO
 
 DROP TABLE [Work]
-DROP TABLE [Workers]
+DROP TABLE [DateOfAcceptance]
 DROP TABLE [ProductUnit]
 
 SELECT * FROM [Position]
@@ -146,6 +146,7 @@ CREATE TABLE [DateOfAcceptance]
 	[ID]				INT IDENTITY(1,1),
 	[DateTitle]			DATE						NOT NULL,
 	[TimeTile]			NVARCHAR(50)				NOT NULL,
+	[TotalSum]			NVARCHAR(100)				NOT NULL,
 	CONSTRAINT PK_DateOfAcceptance_ID PRIMARY KEY ([ID])
 )
 GO
@@ -153,19 +154,33 @@ GO
 CREATE TABLE [Products]
 (
 	[ID]				INT IDENTITY(1,1),
-	[TotalSum]			BIGINT						NOT NULL,
-	[TotalProducts]		INT							NOT NULL,
-	[ProductUnitID]		INT CONSTRAINT FK_Products_ProductsUnitID_ProductsUnit_ID FOREIGN KEY REFERENCES [ProductUnit] ([ID]) NOT NULL,
+	[ProductID]			INT CONSTRAINT FK_Products_ProductID_Product_ID FOREIGN KEY REFERENCES [Product] ([ID]) NOT NULL,
+	[QuatityID]			INT CONSTRAINT FK_Products_QuantityID_Quantity_ID FOREIGN KEY REFERENCES [Quantity] ([ID]) NOT NULL,
 	CONSTRAINT PK_ProductsMain_ID PRIMARY KEY ([ID])
 )
 GO
 
-CREATE TABLE [ProductUnit]
+CREATE TABLE [Product]
 (
 	[ID]				INT IDENTITY(1,1),
-	[ProductName]		NVARCHAR(100)				 NOT NULL,
-	[PriceWithUnit]		BIGINT						 NOT NULL,		
-	CONSTRAINT PK_Products_ID PRIMARY KEY ([ID])
+	[FirProductName]	NVARCHAR(100)				NOT NULL,
+	[SecProductName]	NVARCHAR(100)				NOT NULL,
+	[ThiProductName]	NVARCHAR(100)				NOT NULL,
+	[ForProductName]	NVARCHAR(100)				NOT NULL,
+	[FifProductName]	NVARCHAR(100)				NOT NULL,	
+	CONSTRAINT PK_Product_ID PRIMARY KEY ([ID])
+)
+GO
+
+CREATE TABLE [Quantity]
+(
+	[ID]				INT IDENTITY(1,1),
+	[FirProdQuan]		INT							NOT NULL,
+	[SecProdQuan]		INT							NOT NULL,
+	[ThiProdQuan]		INT							NOT NULL,
+	[ForProdQuan]		INT							NOT NULL,
+	[FifProdQuan]		INT							NOT NULL,
+	CONSTRAINT PK_Quantity_ID PRIMARY KEY ([ID])
 )
 GO
 /*-----------------------------------------------------------------------------------------------------------------------------*/

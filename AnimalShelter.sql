@@ -59,6 +59,7 @@ CREATE TABLE [Clients]
 	[ID]				INT IDENTITY(1,1),
 	[Surname]			NVARCHAR(100)				NOT NULL,
 	[Name]				NVARCHAR(100)				NOT NULL,
+	[Phone]				NVARCHAR(100)				NOT NULL,
 	[SignInId]			INT CONSTRAINT FK_Clients_SignInId_SignIn_ID FOREIGN KEY REFERENCES [SignIn] ([ID]),
 	CONSTRAINT PK_Clients_ID PRIMARY KEY ([ID])
 )
@@ -70,14 +71,17 @@ CREATE TABLE [Animals]
 (
 	[ID]				INT IDENTITY(1,1),
 	[AnimalImg]			IMAGE						NOT NULL,
-	[AnimalClassID]		INT CONSTRAINT FK_Animals_AnimalClassID_AnimalClass_ID FOREIGN KEY REFERENCES [AnimalClass] ([ID]) NOT NULL,
+	[AnimalGenderID]	INT CONSTRAINT FK_Animals_AnimalsGenderID_AnimalsGender_ID FOREIGN KEY REFERENCES [AnimalGender] ([ID]) NOT NULL,
 	[Alias]				NVARCHAR(100)				NOT NULL,
+	[Breed]				NVARCHAR(100)				NOT NULL,
+	[Age]				NVARCHAR(100)				NOT NULL,
+	[Weight]			NVARCHAR(100)				NOT NULL,
 	[Description]		NVARCHAR(MAX)				NOT NULL,
 	CONSTRAINT PK_Animals_ID PRIMARY KEY ([ID])	
 )
 GO
 
-CREATE TABLE [AnimalClass]
+CREATE TABLE [AnimalGender]
 (
 	[ID]				INT IDENTITY(1,1),
 	[Title]				NVARCHAR(100)				NOT NULL,
@@ -85,7 +89,5 @@ CREATE TABLE [AnimalClass]
 )
 GO
 
-INSERT INTO [AnimalClass] ([Title]) VALUES ('Кошка')
-INSERT INTO [AnimalClass] ([Title]) VALUES ('Собака')
-INSERT INTO [AnimalClass] ([Title]) VALUES ('Хомяк')
-INSERT INTO [AnimalClass] ([Title]) VALUES ('Кролик')
+INSERT INTO [AnimalGender] ([Title]) VALUES ('Мужской')
+INSERT INTO [AnimalGender] ([Title]) VALUES ('Женский')
