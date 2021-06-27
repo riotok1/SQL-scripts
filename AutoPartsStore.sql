@@ -39,10 +39,14 @@ GO
 
 INSERT INTO [Role] ([ID],[Title]) VALUES ('A', 'Admin')
 /* ------------------------------------------------------ */
+
 CREATE TABLE [SpareConnect]
 (
 	[ID]					INT IDENTITY(1,1),
 	[SpareID]				INT CONSTRAINT FK_SpareConnect_SpareID_SparePart_ID FOREIGN KEY REFERENCES [SparePart] ([ID]),
+	[ClientID]				INT CONSTRAINT FK_SpareConnect_ClientID_Clients_ID FOREIGN KEY REFERENCES [Clients] ([ID]) NOT NULL,
+	[AnnualCount]			INT							NOT NULL,
+	[TotalSum]				INT							NOT NULL,
 	CONSTRAINT PK_SpareConnect_ID PRIMARY KEY ([ID])
 )
 GO
@@ -57,5 +61,15 @@ CREATE TABLE [SparePart]
 	[Price]					BIGINT						NOT NULL,
 	[DateOfRegistr]			DATE						NOT NULL,
 	CONSTRAINT PK_SparePart_ID PRIMARY KEY ([ID])
+)
+GO
+
+CREATE TABLE [Clients]
+(
+	[ID]					INT IDENTITY(1,1),
+	[Surname]				NVARCHAR(50)				NOT NULL,
+	[Name]					NVARCHAR(50)				NOT NULL,
+	[Patronymic]			NVARCHAR(50)				NOT NULL,
+	CONSTRAINT PK_Clients_ID PRIMARY KEY ([ID])
 )
 GO

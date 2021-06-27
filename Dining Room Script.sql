@@ -50,9 +50,7 @@ CREATE TABLE [Work]
 )
 GO
 
-DROP TABLE [Work]
-DROP TABLE [DateOfAcceptance]
-DROP TABLE [ProductUnit]
+DROP TABLE [Products]
 
 SELECT * FROM [Position]
 
@@ -98,8 +96,8 @@ CREATE TABLE [Workers]
 	[Surname]			NVARCHAR(100)				NOT NULL,
 	[Name]				NVARCHAR(100)				NOT NULL,
 	[Patronymic]		NVARCHAR(100)				NOT NULL,
-	[Age]				INT							NOT NULL,
-	[Expirience]		INT							NOT NULL,
+	[Age]				NVARCHAR(50)				NOT NULL,
+	[Expirience]		NVARCHAR(50)				NOT NULL,
 	[UsStaff]			NVARCHAR(100)				NOT NULL,
 	CONSTRAINT PK_WorkPerson_ID PRIMARY KEY ([ID])
 )
@@ -137,6 +135,8 @@ CREATE TABLE [PoductsDate]
 	[ID]				INT IDENTITY(1,1),
 	[DateID]			INT CONSTRAINT FK_ProductsDate_Date_DateOfAcceptance_ID FOREIGN KEY REFERENCES [DateOfAcceptance] ([ID]) NOT NULL,
 	[ProductsID]		INT CONSTRAINT FK_ProductsDate_ProductsID_Products_ID FOREIGN KEY REFERENCES [Products] ([ID]) NOT NULL,
+	[TotalSum]			FLOAT						NOT NULL,
+	[Count]				INT							NOT NULL,
 	CONSTRAINT PK_ProductsDate_ID PRIMARY KEY ([ID])
 )
 GO
@@ -146,7 +146,6 @@ CREATE TABLE [DateOfAcceptance]
 	[ID]				INT IDENTITY(1,1),
 	[DateTitle]			DATE						NOT NULL,
 	[TimeTile]			NVARCHAR(50)				NOT NULL,
-	[TotalSum]			NVARCHAR(100)				NOT NULL,
 	CONSTRAINT PK_DateOfAcceptance_ID PRIMARY KEY ([ID])
 )
 GO
@@ -154,33 +153,12 @@ GO
 CREATE TABLE [Products]
 (
 	[ID]				INT IDENTITY(1,1),
-	[ProductID]			INT CONSTRAINT FK_Products_ProductID_Product_ID FOREIGN KEY REFERENCES [Product] ([ID]) NOT NULL,
-	[QuatityID]			INT CONSTRAINT FK_Products_QuantityID_Quantity_ID FOREIGN KEY REFERENCES [Quantity] ([ID]) NOT NULL,
-	CONSTRAINT PK_ProductsMain_ID PRIMARY KEY ([ID])
+	[ProductImage]		IMAGE						NOT NULL,
+	[ProductName]		NVARCHAR(100)				NOT NULL,
+	[Price]				BIGINT						NOT NULL,
+	[Count]				INT							NOT NULL,
+	CONSTRAINT PK_Products_ID PRIMARY KEY ([ID])
 )
 GO
 
-CREATE TABLE [Product]
-(
-	[ID]				INT IDENTITY(1,1),
-	[FirProductName]	NVARCHAR(100)				NOT NULL,
-	[SecProductName]	NVARCHAR(100)				NOT NULL,
-	[ThiProductName]	NVARCHAR(100)				NOT NULL,
-	[ForProductName]	NVARCHAR(100)				NOT NULL,
-	[FifProductName]	NVARCHAR(100)				NOT NULL,	
-	CONSTRAINT PK_Product_ID PRIMARY KEY ([ID])
-)
-GO
-
-CREATE TABLE [Quantity]
-(
-	[ID]				INT IDENTITY(1,1),
-	[FirProdQuan]		INT							NOT NULL,
-	[SecProdQuan]		INT							NOT NULL,
-	[ThiProdQuan]		INT							NOT NULL,
-	[ForProdQuan]		INT							NOT NULL,
-	[FifProdQuan]		INT							NOT NULL,
-	CONSTRAINT PK_Quantity_ID PRIMARY KEY ([ID])
-)
-GO
 /*-----------------------------------------------------------------------------------------------------------------------------*/
